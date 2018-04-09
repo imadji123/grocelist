@@ -8,11 +8,13 @@ public class Grocery {
     private String name;
     private int amount;
     private String note;
+    private boolean checked;
 
     public Grocery(String name, int amount, String note) {
         this.name = name;
         this.amount = amount;
         this.note = note;
+        this.checked = false;
     }
 
     public String getName() {
@@ -37,6 +39,14 @@ public class Grocery {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
 }

@@ -9,11 +9,35 @@
         android:layout_height="match_parent"
         android:padding="@dimen/spacing_normal">
 
+        <RelativeLayout
+            android:id="@+id/relative_grocery_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:background="@drawable/grocery_status_background"
+            android:backgroundTint="@color/colorPrimary">
+
+            <TextView
+                android:id="@+id/text_grocery_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/grocery_amount_default_value"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_large" />
+
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/text_grocery_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="@integer/card_title_max_lines"
+            android:layout_marginTop="@dimen/spacing_super_tiny"
+            android:layout_toEndOf="@id/relative_grocery_status"
+            android:layout_toRightOf="@id/relative_grocery_status"
+            android:ellipsize="end"
+            android:maxLines="@integer/item_grocery_title_max_lines"
             android:text="@string/grocery_name_hint"
             android:textSize="@dimen/text_size_regular" />
 
@@ -23,7 +47,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_grocery_name"
             android:layout_marginTop="@dimen/spacing_super_tiny"
-            android:maxLines="@integer/card_subtitle_max_lines"
+            android:layout_toEndOf="@id/relative_grocery_status"
+            android:layout_toRightOf="@id/relative_grocery_status"
+            android:ellipsize="end"
+            android:maxLines="@integer/item_grocery_subtitle_max_lines"
             android:text="@string/grocery_note_hint" />
 
     </RelativeLayout>
