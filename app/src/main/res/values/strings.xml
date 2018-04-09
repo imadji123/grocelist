@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Grocelist</string>
+    <string name="list_no_groceries">No Groceries</string>
+    <string name="grocery_name_hint">Grocery name</string>
+    <string name="grocery_note_hint">Leave a note here..</string>
+    <string name="grocery_amount_default_value">1</string>
 </resources>

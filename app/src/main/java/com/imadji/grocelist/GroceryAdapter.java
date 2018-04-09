@@ -43,7 +43,22 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         notifyItemInserted(position);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public void editItem(int position, Grocery editedGrocery) {
+        groceryList.set(position, editedGrocery);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        groceryList.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void clearAllItems() {
+        groceryList.clear();
+        notifyDataSetChanged();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewHolder(View itemView) {
             super(itemView);
