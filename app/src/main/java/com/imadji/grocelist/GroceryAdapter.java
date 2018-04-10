@@ -52,12 +52,12 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
 
     public void editItem(int position, Grocery editedGrocery) {
         groceryList.set(position, editedGrocery);
-        notifyDataSetChanged();
+        notifyItemChanged(position);
     }
 
     public void removeItem(int position) {
         groceryList.remove(position);
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
     }
 
     public void clearAllItems() {

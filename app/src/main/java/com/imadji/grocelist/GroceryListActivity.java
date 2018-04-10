@@ -1,10 +1,12 @@
 package com.imadji.grocelist;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ public class GroceryListActivity extends AppCompatActivity {
     private TextView textNoGroceries;
     private RecyclerView recyclerGroceries;
     private GroceryAdapter groceryAdapter;
+    private FloatingActionButton fabAddGrocery;
 
     private List<Grocery> groceryList = new ArrayList<>();
 
@@ -26,12 +29,25 @@ public class GroceryListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         textNoGroceries = findViewById(R.id.text_no_groceries);
         groceryAdapter = new GroceryAdapter(this);
         recyclerGroceries = findViewById(R.id.recycler_groceries);
         recyclerGroceries.setLayoutManager(new LinearLayoutManager(this));
         recyclerGroceries.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerGroceries.setAdapter(groceryAdapter);
+
+        fabAddGrocery = findViewById(R.id.fab_add_grocery);
+        fabAddGrocery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createDummyGrocery();
+                refreshGroceryList();
+                recyclerGroceries.getLayoutManager().scrollToPosition(0);
+            }
+        });
 
     }
 
@@ -43,13 +59,17 @@ public class GroceryListActivity extends AppCompatActivity {
     }
 
     private void showEmptyList() {
-        textNoGroceries.setVisibility(View.VISIBLE);
-        recyclerGroceries.setVisibility(View.GONE);
+        if (textNoGroceries.getVisibility() == View.GONE) {
+            textNoGroceries.setVisibility(View.VISIBLE);
+            recyclerGroceries.setVisibility(View.GONE);
+        }
     }
 
     private void showGroceryList() {
-        textNoGroceries.setVisibility(View.GONE);
-        recyclerGroceries.setVisibility(View.VISIBLE);
+        if (recyclerGroceries.getVisibility() == View.GONE) {
+            textNoGroceries.setVisibility(View.GONE);
+            recyclerGroceries.setVisibility(View.VISIBLE);
+        }
     }
 
     private void refreshGroceryList() {
