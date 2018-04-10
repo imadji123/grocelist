@@ -3,12 +3,14 @@ package com.imadji.grocelist;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GroceryListActivity extends AppCompatActivity {
     private static final String TAG = GroceryListActivity.class.getSimpleName();
@@ -27,7 +29,8 @@ public class GroceryListActivity extends AppCompatActivity {
         textNoGroceries = findViewById(R.id.text_no_groceries);
         groceryAdapter = new GroceryAdapter(this);
         recyclerGroceries = findViewById(R.id.recycler_groceries);
-        recyclerGroceries.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerGroceries.setLayoutManager(new LinearLayoutManager(this));
+        recyclerGroceries.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerGroceries.setAdapter(groceryAdapter);
 
     }
@@ -76,6 +79,18 @@ public class GroceryListActivity extends AppCompatActivity {
     private void deleteAllGroceries() {
         groceryList.clear();
         groceryAdapter.clearAllItems();
+    }
+
+    private void createDummyGrocery() {
+        String[] groceryNames = {"Milk", "Eggs", "Bread", "Apple", "Yogurt", "Tea", "Cereal"};
+        Grocery grocery = new Grocery(groceryNames[generateRandomNumber(0, 6)],
+                generateRandomNumber(1, 10), "Lorem ipsum dolor sit amet, at sit commodo " +
+                "nominavi abhorreant, ius in epicuri sensibus laboramus.");
+        addGrocery(grocery);
+    }
+
+    private int generateRandomNumber(int min, int max) {
+        return new Random().nextInt(max - min + 1) + min;
     }
 
 }
