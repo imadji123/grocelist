@@ -7,20 +7,24 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
+
+import com.imadji.grocelist.helper.RecyclerItemTouchHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GroceryListActivity extends AppCompatActivity {
+public class GroceryListActivity extends AppCompatActivity implements RecyclerItemTouchHelper.Listener {
     private static final String TAG = GroceryListActivity.class.getSimpleName();
 
     private TextView textNoGroceries;
     private RecyclerView recyclerGroceries;
     private GroceryAdapter groceryAdapter;
     private FloatingActionButton fabAddGrocery;
+    private ItemTouchHelper itemTouchHelper;
 
     private List<Grocery> groceryList = new ArrayList<>();
 
@@ -50,12 +54,23 @@ public class GroceryListActivity extends AppCompatActivity {
             }
         });
 
+        ItemTouchHelper.SimpleCallback callback = new RecyclerItemTouchHelper(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this);
+        itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerGroceries);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        refreshGroceryList();
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        deleteGrocery(viewHolder.getAdapterPosition());
         refreshGroceryList();
     }
 
