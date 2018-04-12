@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/spacing_normal"
             android:background="@drawable/grocery_status_background"
-            android:backgroundTint="@color/colorPrimary">
+            android:backgroundTint="@color/material_indigo_700">
 
             <TextView
                 android:id="@+id/text_grocery_amount"

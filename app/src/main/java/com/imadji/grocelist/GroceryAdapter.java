@@ -62,7 +62,7 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
 
     public void clearAllItems() {
         groceryList.clear();
-        notifyDataSetChanged();
+        notifyItemRemoved(0);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

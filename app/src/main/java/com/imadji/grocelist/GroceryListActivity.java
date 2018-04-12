@@ -36,6 +36,7 @@ public class GroceryListActivity extends AppCompatActivity {
         groceryAdapter = new GroceryAdapter(this);
         recyclerGroceries = findViewById(R.id.recycler_groceries);
         recyclerGroceries.setLayoutManager(new LinearLayoutManager(this));
+        recyclerGroceries.setItemAnimator(null);
         recyclerGroceries.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerGroceries.setAdapter(groceryAdapter);
 
@@ -73,7 +74,7 @@ public class GroceryListActivity extends AppCompatActivity {
     }
 
     private void refreshGroceryList() {
-        if (groceryList.size() == 0) {
+        if (groceryList.isEmpty()) {
             showEmptyList();
             return;
         }
