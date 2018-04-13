@@ -55,6 +55,13 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         notifyItemChanged(position);
     }
 
+    public void moveItem(int position, Grocery checkedGrocery) {
+        groceryList.remove(position);
+        groceryList.add(checkedGrocery);
+        notifyItemMoved(position, groceryList.size() - 1);
+        notifyItemInserted(groceryList.size() - 1);
+    }
+
     public void removeItem(int position) {
         groceryList.remove(position);
         notifyItemRemoved(position);

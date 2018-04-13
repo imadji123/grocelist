@@ -24,7 +24,6 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
     private RecyclerView recyclerGroceries;
     private GroceryAdapter groceryAdapter;
     private FloatingActionButton fabAddGrocery;
-    private ItemTouchHelper itemTouchHelper;
 
     private List<Grocery> groceryList = new ArrayList<>();
 
@@ -56,7 +55,7 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
 
         ItemTouchHelper.SimpleCallback callback = new RecyclerItemTouchHelper(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this);
-        itemTouchHelper = new ItemTouchHelper(callback);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerGroceries);
 
     }
@@ -70,7 +69,12 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        deleteGrocery(viewHolder.getAdapterPosition());
+        if (direction == ItemTouchHelper.LEFT) {
+            deleteGrocery(viewHolder.getAdapterPosition());
+        } else if (direction == ItemTouchHelper.RIGHT) {
+            checkGrocery(viewHolder.getAdapterPosition());
+        }
+
         refreshGroceryList();
     }
 
@@ -89,12 +93,22 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
     }
 
     private void refreshGroceryList() {
+        checkAddButtonState();
+
         if (groceryList.isEmpty()) {
             showEmptyList();
             return;
         }
 
         showGroceryList();
+    }
+
+    private void checkAddButtonState() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerGroceries.getLayoutManager();
+        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+        if (firstVisibleItemPosition <= 0 && fabAddGrocery.getVisibility() != View.VISIBLE) {
+            fabAddGrocery.show();
+        }
     }
 
     private void addGrocery(Grocery newGrocery) {
@@ -105,6 +119,14 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
     private void editGrocery(int position, Grocery editedGrocery) {
         groceryList.set(position, editedGrocery);
         groceryAdapter.editItem(position, editedGrocery);
+    }
+
+    private void checkGrocery(int position) {
+        Grocery grocery = groceryList.get(position);
+        grocery.setChecked(true);
+        groceryList.remove(position);
+        groceryList.add(grocery);
+        groceryAdapter.moveItem(position, grocery);
     }
 
     private void deleteGrocery(int position) {

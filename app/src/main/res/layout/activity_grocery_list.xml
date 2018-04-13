@@ -32,6 +32,7 @@
         android:backgroundTint="@android:color/holo_red_dark"
         android:elevation="@dimen/fab_elevation"
         android:src="@drawable/ic_add"
+        app:layout_behavior="com.imadji.grocelist.helper.FabBehavior"
         app:pressedTranslationZ="@dimen/fab_pressed_translation" />
 
 </android.support.design.widget.CoordinatorLayout>
