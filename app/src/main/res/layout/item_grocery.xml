@@ -29,6 +29,25 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/relative_grocery_status_checked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:background="@drawable/grocery_status_background"
+            android:backgroundTint="@color/transparent_black_50"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/image_grocery_status_checked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_check" />
+
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/text_grocery_name"
             android:layout_width="wrap_content"

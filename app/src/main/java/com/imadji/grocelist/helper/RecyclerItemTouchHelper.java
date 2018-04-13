@@ -25,6 +25,12 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         listener.onSwiped(viewHolder, direction);
     }
 
+    @Override
+    public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        if (viewHolder.getItemViewType() == 2) return 0;
+        return super.getSwipeDirs(recyclerView, viewHolder);
+    }
+
     public interface Listener {
         void onSwiped(RecyclerView.ViewHolder viewHolder, int direction);
     }

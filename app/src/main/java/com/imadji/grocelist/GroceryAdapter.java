@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,6 +17,11 @@ import java.util.List;
  */
 
 public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHolder> {
+    private static final String TAG = GroceryAdapter.class.getSimpleName();
+
+    private static final int TYPE_NORMAL = 1;
+    private static final int TYPE_CHECKED = 2;
+
     private Context context;
     private List<Grocery> groceryList;
 
@@ -35,14 +41,20 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Grocery grocery = groceryList.get(position);
-        holder.textName.setText(grocery.getName());
-        holder.textAmount.setText(String.valueOf(grocery.getAmount()));
-        holder.textNote.setText(grocery.getNote());
+        holder.setItem(grocery);
     }
 
     @Override
     public int getItemCount() {
         return groceryList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (groceryList.get(position).isChecked()) {
+            return TYPE_CHECKED;
+        }
+        return TYPE_NORMAL;
     }
 
     public void addItem(int position, Grocery newGrocery) {
@@ -76,13 +88,23 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         public TextView textName;
         public TextView textAmount;
         public TextView textNote;
+        public RelativeLayout layoutChecked;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             textName = itemView.findViewById(R.id.text_grocery_name);
             textAmount = itemView.findViewById(R.id.text_grocery_amount);
             textNote = itemView.findViewById(R.id.text_grocery_note);
+            layoutChecked = itemView.findViewById(R.id.relative_grocery_status_checked);
+        }
+
+        public void setItem(Grocery grocery) {
+            textName.setText(grocery.getName());
+            textAmount.setText(String.valueOf(grocery.getAmount()));
+            textNote.setText(grocery.getNote());
+            if (grocery.isChecked()) {
+                layoutChecked.setVisibility(View.VISIBLE);
+            }
         }
     }
 
