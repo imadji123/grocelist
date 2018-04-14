@@ -1,6 +1,8 @@
 package com.imadji.grocelist;
 
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +22,7 @@ import java.util.Random;
 public class GroceryListActivity extends AppCompatActivity implements RecyclerItemTouchHelper.Listener {
     private static final String TAG = GroceryListActivity.class.getSimpleName();
 
+    private CoordinatorLayout coordinatorGroceryList;
     private TextView textNoGroceries;
     private RecyclerView recyclerGroceries;
     private GroceryAdapter groceryAdapter;
@@ -35,6 +38,7 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        coordinatorGroceryList = findViewById(R.id.coordinator_grocery_list);
         textNoGroceries = findViewById(R.id.text_no_groceries);
         groceryAdapter = new GroceryAdapter(this);
         recyclerGroceries = findViewById(R.id.recycler_groceries);
@@ -111,9 +115,9 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
         }
     }
 
-    private void addGrocery(Grocery newGrocery) {
-        groceryList.add(0, newGrocery);
-        groceryAdapter.addItem(0, newGrocery);
+    private void addGrocery(int position, Grocery newGrocery) {
+        groceryList.add(position, newGrocery);
+        groceryAdapter.addItem(position, newGrocery);
     }
 
     private void editGrocery(int position, Grocery editedGrocery) {
@@ -127,11 +131,14 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
         groceryList.remove(position);
         groceryList.add(grocery);
         groceryAdapter.moveItem(position, grocery);
+        showCheckedMessage(grocery);
     }
 
     private void deleteGrocery(int position) {
+        Grocery deletedGrocery = groceryList.get(position);
         groceryList.remove(position);
         groceryAdapter.removeItem(position);
+        showDeletedMessage(position, deletedGrocery);
     }
 
     private void deleteAllGroceries() {
@@ -139,12 +146,35 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
         groceryAdapter.clearAllItems();
     }
 
+    private void restoreGrocery(int position, Grocery grocery) {
+        addGrocery(position, grocery);
+    }
+
+    private void showCheckedMessage(Grocery checkedGrocery) {
+        String message = checkedGrocery.getName() + " " + getResources().getString(R.string.grocery_checked_message);
+        Snackbar.make(coordinatorGroceryList, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void showDeletedMessage(final int position, final Grocery deletedGrocery) {
+        String message = deletedGrocery.getName() + " " + getResources().getString(R.string.grocery_deleted_message);
+        Snackbar.make(coordinatorGroceryList, message, Snackbar.LENGTH_LONG)
+                .setAction(R.string.all_undo, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        restoreGrocery(position, deletedGrocery);
+                        refreshGroceryList();
+                    }
+                })
+                .setActionTextColor(getResources().getColor(R.color.material_indigo_200))
+                .show();
+    }
+
     private void createDummyGrocery() {
         String[] groceryNames = {"Milk", "Eggs", "Bread", "Apple", "Yogurt", "Tea", "Cereal"};
         Grocery grocery = new Grocery(groceryNames[generateRandomNumber(0, 6)],
                 generateRandomNumber(1, 10), "Lorem ipsum dolor sit amet, at sit commodo " +
                 "nominavi abhorreant, ius in epicuri sensibus laboramus.");
-        addGrocery(grocery);
+        addGrocery(0, grocery);
     }
 
     private int generateRandomNumber(int min, int max) {
