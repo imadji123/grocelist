@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -72,6 +74,28 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.grocery_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_clear).setVisible(!groceryList.isEmpty());
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_clear) {
+            deleteAllGroceries();
+            refreshGroceryList();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         if (direction == ItemTouchHelper.LEFT) {
             deleteGrocery(viewHolder.getAdapterPosition());
@@ -98,6 +122,7 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
 
     private void refreshGroceryList() {
         checkAddButtonState();
+        invalidateOptionsMenu();
 
         if (groceryList.isEmpty()) {
             showEmptyList();
@@ -110,7 +135,7 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
     private void checkAddButtonState() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerGroceries.getLayoutManager();
         int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-        if (firstVisibleItemPosition <= 0 && fabAddGrocery.getVisibility() != View.VISIBLE) {
+        if (groceryList.isEmpty() || firstVisibleItemPosition <= 0 && fabAddGrocery.getVisibility() != View.VISIBLE) {
             fabAddGrocery.show();
         }
     }
@@ -158,7 +183,7 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
     private void showDeletedMessage(final int position, final Grocery deletedGrocery) {
         String message = deletedGrocery.getName() + " " + getResources().getString(R.string.grocery_deleted_message);
         Snackbar.make(coordinatorGroceryList, message, Snackbar.LENGTH_LONG)
-                .setAction(R.string.all_undo, new View.OnClickListener() {
+                .setAction(R.string.action_undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         restoreGrocery(position, deletedGrocery);
