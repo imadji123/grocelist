@@ -190,7 +190,7 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
                         refreshGroceryList();
                     }
                 })
-                .setActionTextColor(getResources().getColor(R.color.material_indigo_200))
+                .setActionTextColor(getResources().getColor(R.color.material_blue_100))
                 .show();
     }
 

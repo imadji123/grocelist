@@ -36,7 +36,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/spacing_normal"
             android:background="@drawable/grocery_status_background"
-            android:backgroundTint="@color/transparent_black_50"
+            android:backgroundTint="@color/material_green_600"
             android:visibility="gone">
 
             <ImageView
