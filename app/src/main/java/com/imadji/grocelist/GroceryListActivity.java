@@ -1,5 +1,6 @@
 package com.imadji.grocelist;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.imadji.grocelist.helper.RecyclerItemTouchHelper;
 
 import java.util.ArrayList;
@@ -88,8 +91,7 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_clear) {
-            deleteAllGroceries();
-            refreshGroceryList();
+            showClearConfirmationDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -175,13 +177,28 @@ public class GroceryListActivity extends AppCompatActivity implements RecyclerIt
         addGrocery(position, grocery);
     }
 
+    private void showClearConfirmationDialog() {
+        new MaterialDialog.Builder(this)
+                .content(R.string.msg_clear_grocery_list)
+                .positiveText(R.string.action_clear)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        deleteAllGroceries();
+                        refreshGroceryList();
+                    }
+                })
+                .negativeText(R.string.action_cancel)
+                .show();
+    }
+
     private void showCheckedMessage(Grocery checkedGrocery) {
-        String message = checkedGrocery.getName() + " " + getResources().getString(R.string.grocery_checked_message);
+        String message = checkedGrocery.getName() + " " + getResources().getString(R.string.msg_grocery_checked);
         Snackbar.make(coordinatorGroceryList, message, Snackbar.LENGTH_SHORT).show();
     }
 
     private void showDeletedMessage(final int position, final Grocery deletedGrocery) {
-        String message = deletedGrocery.getName() + " " + getResources().getString(R.string.grocery_deleted_message);
+        String message = deletedGrocery.getName() + " " + getResources().getString(R.string.msg_grocery_deleted);
         Snackbar.make(coordinatorGroceryList, message, Snackbar.LENGTH_LONG)
                 .setAction(R.string.action_undo, new View.OnClickListener() {
                     @Override

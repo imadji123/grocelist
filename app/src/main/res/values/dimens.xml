@@ -9,6 +9,7 @@
     <dimen name="spacing_small">10dp</dimen>
     <dimen name="spacing_tiny">8dp</dimen>
     <dimen name="spacing_super_tiny">4dp</dimen>
+    <dimen name="spacing_zero">0dp</dimen>
 
     <!-- Text size -->
     <dimen name="text_size_super_giant">64sp</dimen>

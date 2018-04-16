@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">Grocelist</string>
+    <string name="action_cancel">Cancel</string>
     <string name="action_clear">Clear</string>
     <string name="action_undo">Undo</string>
-    <string name="list_no_groceries">No Groceries</string>
+    <string name="grocery_list_empty">No Groceries</string>
     <string name="grocery_name_hint">Grocery name</string>
     <string name="grocery_note_hint">Leave a note here..</string>
     <string name="grocery_amount_default_value">1</string>
-    <string name="grocery_checked_message">Checked!</string>
-    <string name="grocery_deleted_message">Deleted!</string>
+    <string name="msg_clear_grocery_list">Clear grocery list?</string>
+    <string name="msg_grocery_checked">Checked!</string>
+    <string name="msg_grocery_deleted">Deleted!</string>
 </resources>

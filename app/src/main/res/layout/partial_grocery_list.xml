@@ -19,7 +19,7 @@
         android:id="@+id/text_no_groceries"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/list_no_groceries"
+        android:text="@string/grocery_list_empty"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
