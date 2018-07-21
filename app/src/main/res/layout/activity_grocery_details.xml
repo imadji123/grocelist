@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -33,7 +34,8 @@
                 android:paddingLeft="@dimen/spacing_giant"
                 android:paddingRight="@dimen/spacing_giant"
                 android:paddingTop="@dimen/spacing_giant"
-                android:paddingBottom="@dimen/text_size_huge">
+                android:paddingBottom="@dimen/text_size_huge"
+                android:visibility="invisible">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_groceries_name"
@@ -74,13 +76,16 @@
     <include layout="@layout/content_grocery_details" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_add_grocery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_dialog_email"
-        android:visibility="invisible" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/spacing_normal"
+        android:backgroundTint="@color/material_red_700"
+        android:elevation="@dimen/fab_elevation"
+        android:src="@drawable/ic_add"
+        app:borderWidth="@dimen/spacing_zero"
+        app:layout_behavior=".helper.FabBehavior"
+        app:pressedTranslationZ="@dimen/fab_pressed_translation" />
 
 </android.support.design.widget.CoordinatorLayout>
