@@ -13,15 +13,12 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="InputText.Error" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/material_amber_500</item>
-        <item name="android:textSize">@dimen/text_size_tiny</item>
-    </style>
 
 </resources>

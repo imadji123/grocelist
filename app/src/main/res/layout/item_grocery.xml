@@ -56,7 +56,7 @@
             android:layout_toEndOf="@id/relative_grocery_status"
             android:layout_toRightOf="@id/relative_grocery_status"
             android:ellipsize="end"
-            android:maxLines="@integer/item_grocery_title_max_lines"
+            android:maxLines="@integer/single_line"
             android:text="@string/grocery_name_hint"
             android:textSize="@dimen/text_size_regular" />
 
@@ -69,7 +69,7 @@
             android:layout_toEndOf="@id/relative_grocery_status"
             android:layout_toRightOf="@id/relative_grocery_status"
             android:ellipsize="end"
-            android:maxLines="@integer/item_grocery_subtitle_max_lines"
+            android:maxLines="@integer/single_line"
             android:text="@string/grocery_note_hint" />
 
     </RelativeLayout>

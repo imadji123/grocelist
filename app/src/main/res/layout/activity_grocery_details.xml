@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".view.GroceryDetailsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginBottom="@dimen/spacing_huge"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@+id/toolbar">
+
+            <RelativeLayout
+                android:id="@+id/rel_edit_groceries_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/material_indigo_400"
+                android:gravity="bottom"
+                android:paddingLeft="@dimen/spacing_giant"
+                android:paddingRight="@dimen/spacing_giant"
+                android:paddingTop="@dimen/spacing_giant"
+                android:paddingBottom="@dimen/text_size_huge">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_groceries_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_tiny"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@integer/grocery_name_max_length"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/InputText.Error">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/input_groceries_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Groceries Name"
+                        android:maxLines="@integer/single_line"
+                        android:maxLength="@integer/grocery_name_max_length"
+                        android:inputType="textCapSentences"
+                        android:textSize="@dimen/text_size_giant"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_back"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_grocery_details" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@android:drawable/ic_dialog_email"
+        android:visibility="invisible" />
+
+</android.support.design.widget.CoordinatorLayout>
