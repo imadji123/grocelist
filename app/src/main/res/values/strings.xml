@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">Grocelist</string>
+    <string name="action_about">About</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_clear">Clear</string>
     <string name="action_edit">Edit</string>
     <string name="action_save">Save</string>
     <string name="action_undo">Undo</string>
+    <string name="groceries_completed">Completed!</string>
+    <string name="groceries_name">Surfaces and edges of the material provide visual cues that are grounded in reality.</string>
+    <string name="groceries_date">22/07/2018</string>
+    <string name="groceries_time">12:06</string>
     <string name="grocery_list_empty">No Groceries</string>
     <string name="grocery_name_hint">Grocery name</string>
     <string name="grocery_note_hint">Leave a note here..</string>
@@ -102,5 +107,4 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="action_settings">Settings</string>
 </resources>

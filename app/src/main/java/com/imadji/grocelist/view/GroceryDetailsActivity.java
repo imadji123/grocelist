@@ -102,7 +102,6 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        invalidateOptionsMenu();
         menu.findItem(R.id.action_edit).setVisible(!isEditMode);
         menu.findItem(R.id.action_save).setVisible(isEditMode);
         return super.onPrepareOptionsMenu(menu);
@@ -206,12 +205,14 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
     private void lockToolbar() {
         layoutParams.setScrollFlags(0);
         toolbarLayout.setLayoutParams(layoutParams);
+        invalidateOptionsMenu();
     }
 
     private void unlockToolbar() {
         layoutParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                 | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
         toolbarLayout.setLayoutParams(layoutParams);
+        invalidateOptionsMenu();
     }
 
     private void refreshGroceryList() {
