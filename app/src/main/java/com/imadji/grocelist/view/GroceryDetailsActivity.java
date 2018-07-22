@@ -2,6 +2,7 @@ package com.imadji.grocelist.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -17,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,10 +42,10 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
 
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout coordinatorGroceries;
-    @BindView(R.id.toolbar_layout)
-    CollapsingToolbarLayout toolbarLayout;
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout toolbarLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab_add_grocery)
@@ -56,18 +56,16 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
     TextInputLayout inputLayoutGroceriesName;
     @BindView(R.id.input_groceries_name)
     TextInputEditText inputGroceriesName;
-
-    @BindView(R.id.text_no_groceries)
-    TextView textNoGrocery;
     @BindView(R.id.recycler_groceries)
     RecyclerView recyclerGroceries;
+    @BindView(R.id.text_no_groceries)
+    TextView textNoGrocery;
 
-    private AppBarLayout.LayoutParams layoutParams;
+    private AppBarLayout.LayoutParams appBarLayoutParams;
     private GroceryAdapter groceryAdapter;
 
     private long groceriesId;
     private String groceriesName;
-    private boolean isEditMode;
 
     private List<Grocery> groceryList = new ArrayList<>();
 
@@ -77,21 +75,21 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
         setContentView(R.layout.activity_grocery_details);
         ButterKnife.bind(this);
 
+        initData();
         setupToolbar();
         setupView();
-        initData();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        refreshGroceryList();
-
-        if (isEditMode) {
+        if (isNewGroceries()) {
             showEditMode();
+            return;
         }
+
+        refreshGroceryList();
     }
 
     @Override
@@ -102,8 +100,8 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_edit).setVisible(!isEditMode);
-        menu.findItem(R.id.action_save).setVisible(isEditMode);
+        menu.findItem(R.id.action_edit).setVisible(!isEditMode());
+        menu.findItem(R.id.action_save).setVisible(isEditMode());
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -115,8 +113,9 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
                 break;
             case R.id.action_save:
                 if (!validateGroceriesName()) return false;
+                saveGroceries();
                 hideEditMode();
-                setToolbarTitle(inputGroceriesName.getText().toString());
+                refreshGroceryList();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -124,7 +123,7 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
 
     @Override
     public boolean onSupportNavigateUp() {
-        if (isEditMode && groceriesId > 0) {
+        if (isEditMode() && !isNewGroceries()) {
             hideEditMode();
             return false;
         }
@@ -143,6 +142,10 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
         refreshGroceryList();
     }
 
+    private void initData() {
+
+    }
+
     private void setupToolbar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -150,7 +153,8 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle("");
         }
-        layoutParams = (AppBarLayout.LayoutParams) toolbarLayout.getLayoutParams();
+        setToolbarTitle(groceriesName);
+        appBarLayoutParams = (AppBarLayout.LayoutParams) toolbarLayout.getLayoutParams();
     }
 
     private void setupView() {
@@ -190,34 +194,12 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
 
     }
 
-    private void initData() {
-        groceriesId = 99;
-        groceriesName = "Sample";
-        isEditMode = groceriesId > 0 ? false : true;
-        inputGroceriesName.setText(groceriesName);
-        setToolbarTitle(groceriesName);
-    }
-
     private void setToolbarTitle(String title) {
         toolbarLayout.setTitle(title);
     }
 
-    private void lockToolbar() {
-        layoutParams.setScrollFlags(0);
-        toolbarLayout.setLayoutParams(layoutParams);
-        invalidateOptionsMenu();
-    }
-
-    private void unlockToolbar() {
-        layoutParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
-                | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
-        toolbarLayout.setLayoutParams(layoutParams);
-        invalidateOptionsMenu();
-    }
-
     private void refreshGroceryList() {
         checkAddButtonState();
-        invalidateOptionsMenu();
 
         if (groceryList.isEmpty()) {
             showEmptyList();
@@ -269,35 +251,34 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
     }
 
     private void showEditMode() {
-        isEditMode = true;
-        lockToolbar();
+        appBarLayout.setExpanded(true,true);
         layoutEditGroceriesName.setVisibility(View.VISIBLE);
+        inputGroceriesName.setText(groceriesName);
+        inputGroceriesName.setSelection(inputGroceriesName.getText().length());
+
+        showSoftKeyboard(inputGroceriesName);
+
+        lockToolbar();
+
         toolbarLayout.setTitleEnabled(false);
         toolbar.setNavigationIcon(R.drawable.ic_close);
-        appBarLayout.setExpanded(true,true);
-        showSoftKeyboard(inputGroceriesName);
+
         recyclerGroceries.setNestedScrollingEnabled(false);
         fabAddGrocery.hide();
     }
 
     private void hideEditMode() {
-        isEditMode = false;
-        unlockToolbar();
         layoutEditGroceriesName.setVisibility(View.INVISIBLE);
+
+        hideSoftKeyboard(inputGroceriesName);
+
+        unlockToolbar();
+
         toolbarLayout.setTitleEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_back);
-        hideSoftKeyboard(inputGroceriesName);
+
         recyclerGroceries.setNestedScrollingEnabled(true);
         fabAddGrocery.show();
-        refreshGroceryList();
-    }
-
-    private void checkAddButtonState() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerGroceries.getLayoutManager();
-        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-        if (groceryList.isEmpty() || firstVisibleItemPosition <= 0 && fabAddGrocery.getVisibility() != View.VISIBLE) {
-            fabAddGrocery.show();
-        }
     }
 
     private boolean validateGroceriesName() {
@@ -309,25 +290,64 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
         return true;
     }
 
-    private void showSoftKeyboard(View view) {
+    private void saveGroceries() {
+        groceriesId = 99;
+        groceriesName = inputGroceriesName.getText().toString();
+        setToolbarTitle(groceriesName);
+    }
+
+    private boolean isNewGroceries() {
+        return groceriesId == 0;
+    }
+
+    private boolean isEditMode() {
+        return layoutEditGroceriesName.getVisibility() == View.VISIBLE;
+    }
+
+    private void checkAddButtonState() {
+        if (isEditMode()) return;
+
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerGroceries.getLayoutManager();
+        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+        if (groceryList.isEmpty() || firstVisibleItemPosition <= 0 && fabAddGrocery.getVisibility() != View.VISIBLE) {
+            fabAddGrocery.show();
+        }
+    }
+
+    private void lockToolbar() {
+        appBarLayoutParams.setScrollFlags(0);
+        toolbarLayout.setLayoutParams(appBarLayoutParams);
+
+        invalidateOptionsMenu();
+    }
+
+    private void unlockToolbar() {
+        appBarLayoutParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+        toolbarLayout.setLayoutParams(appBarLayoutParams);
+
+        invalidateOptionsMenu();
+    }
+
+    private void showSoftKeyboard(@NonNull View view) {
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
     }
 
-    private void hideSoftKeyboard(View view) {
+    private void hideSoftKeyboard(@NonNull View view) {
         if (view.hasFocus()) view.clearFocus();
         InputMethodManager imm = (InputMethodManager)  getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private void showCheckedMessage(Grocery checkedGrocery) {
+    private void showCheckedMessage(@NonNull Grocery checkedGrocery) {
         String message = checkedGrocery.getName() + " " + getResources().getString(R.string.msg_grocery_checked);
         Snackbar.make(coordinatorGroceries, message, Snackbar.LENGTH_SHORT).show();
     }
 
-    private void showDeletedMessage(final int position, final Grocery deletedGrocery) {
+    private void showDeletedMessage(final int position, @NonNull final Grocery deletedGrocery) {
         String message = deletedGrocery.getName() + " " + getResources().getString(R.string.msg_grocery_deleted);
         Snackbar.make(coordinatorGroceries, message, Snackbar.LENGTH_LONG)
                 .setAction(R.string.action_undo, view -> {

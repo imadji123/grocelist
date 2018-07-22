@@ -29,8 +29,8 @@ public class GroceryListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         fabAddGroceries.setOnClickListener(view -> {
-//            Intent intent = new Intent(this, GroceryDetailsActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(this, GroceryDetailsActivity.class);
+            startActivity(intent);
         });
 
     }

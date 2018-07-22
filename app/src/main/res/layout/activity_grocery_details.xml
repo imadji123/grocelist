@@ -30,11 +30,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/material_indigo_400"
+                android:fitsSystemWindows="true"
                 android:gravity="bottom"
                 android:paddingLeft="@dimen/spacing_giant"
                 android:paddingRight="@dimen/spacing_giant"
-                android:paddingTop="@dimen/spacing_giant"
-                android:paddingBottom="@dimen/text_size_huge"
                 android:visibility="invisible">
 
                 <android.support.design.widget.TextInputLayout
