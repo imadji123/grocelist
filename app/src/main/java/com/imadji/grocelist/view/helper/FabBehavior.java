@@ -1,4 +1,4 @@
-package com.imadji.grocelist.helper;
+package com.imadji.grocelist.view.helper;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

@@ -34,7 +34,7 @@
         android:elevation="@dimen/fab_elevation"
         android:src="@drawable/ic_add"
         app:borderWidth="@dimen/spacing_zero"
-        app:layout_behavior=".helper.FabBehavior"
+        app:layout_behavior=".view.helper.FabBehavior"
         app:pressedTranslationZ="@dimen/fab_pressed_translation" />
 
 </android.support.design.widget.CoordinatorLayout>

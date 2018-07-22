@@ -51,10 +51,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Groceries Name"
-                        android:maxLines="@integer/single_line"
-                        android:maxLength="@integer/grocery_name_max_length"
                         android:inputType="textCapSentences"
-                        android:textSize="@dimen/text_size_giant"/>
+                        android:maxLength="@integer/grocery_name_max_length"
+                        android:maxLines="@integer/single_line"
+                        android:textSize="@dimen/text_size_giant" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -84,7 +84,7 @@
         android:elevation="@dimen/fab_elevation"
         android:src="@drawable/ic_add"
         app:borderWidth="@dimen/spacing_zero"
-        app:layout_behavior=".helper.FabBehavior"
+        app:layout_behavior=".view.helper.FabBehavior"
         app:pressedTranslationZ="@dimen/fab_pressed_translation" />
 
 </android.support.design.widget.CoordinatorLayout>

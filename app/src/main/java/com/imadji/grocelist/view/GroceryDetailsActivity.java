@@ -28,7 +28,7 @@ import android.widget.TextView;
 import com.imadji.grocelist.Grocery;
 import com.imadji.grocelist.GroceryAdapter;
 import com.imadji.grocelist.R;
-import com.imadji.grocelist.helper.RecyclerItemTouchHelper;
+import com.imadji.grocelist.view.helper.RecyclerItemTouchHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,8 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GroceryDetailsActivity extends AppCompatActivity implements RecyclerItemTouchHelper.Listener {
+public class GroceryDetailsActivity extends AppCompatActivity implements RecyclerItemTouchHelper.Listener,
+        AppBarLayout.OnOffsetChangedListener {
     private static final String TAG = GroceryDetailsActivity.class.getSimpleName();
 
     @BindView(R.id.coordinator_layout)
@@ -66,8 +67,10 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
 
     private long groceriesId;
     private String groceriesName;
+    private List<Grocery> groceryList;
 
-    private List<Grocery> groceryList = new ArrayList<>();
+    private int scrollRange = 0;
+    private boolean isTitleShow = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +128,7 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
     public boolean onSupportNavigateUp() {
         if (isEditMode() && !isNewGroceries()) {
             hideEditMode();
+            refreshGroceryList();
             return false;
         }
         onBackPressed();
@@ -142,8 +146,22 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
         refreshGroceryList();
     }
 
-    private void initData() {
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (scrollRange == 0) {
+            scrollRange = appBarLayout.getTotalScrollRange();
+        }
+        if (isEditMode() && scrollRange + verticalOffset == 200) {
+            appBarLayoutParams.setScrollFlags(0);
+            if (isTitleShow) {
+                toolbarLayout.setLayoutParams(appBarLayoutParams);
+            }
+            isTitleShow = false;
+        }
+    }
 
+    private void initData() {
+        groceryList = new ArrayList<>();
     }
 
     private void setupToolbar() {
@@ -154,6 +172,7 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
             getSupportActionBar().setTitle("");
         }
         setToolbarTitle(groceriesName);
+        appBarLayout.addOnOffsetChangedListener(this);
         appBarLayoutParams = (AppBarLayout.LayoutParams) toolbarLayout.getLayoutParams();
     }
 
@@ -265,6 +284,8 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
 
         recyclerGroceries.setNestedScrollingEnabled(false);
         fabAddGrocery.hide();
+
+        recyclerGroceries.setLayoutFrozen(true);
     }
 
     private void hideEditMode() {
@@ -277,8 +298,12 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
         toolbarLayout.setTitleEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_back);
 
+        isTitleShow = true;
+
         recyclerGroceries.setNestedScrollingEnabled(true);
         fabAddGrocery.show();
+
+        recyclerGroceries.setLayoutFrozen(false);
     }
 
     private boolean validateGroceriesName() {
@@ -315,8 +340,10 @@ public class GroceryDetailsActivity extends AppCompatActivity implements Recycle
     }
 
     private void lockToolbar() {
-        appBarLayoutParams.setScrollFlags(0);
-        toolbarLayout.setLayoutParams(appBarLayoutParams);
+        if (!isEditMode()) {
+            appBarLayoutParams.setScrollFlags(0);
+            toolbarLayout.setLayoutParams(appBarLayoutParams);
+        }
 
         invalidateOptionsMenu();
     }
