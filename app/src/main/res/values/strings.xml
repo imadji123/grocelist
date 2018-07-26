@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Grocelist</string>
+    <string name="action_about">About</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_clear">Clear</string>
+    <string name="action_reset">Reset</string>
     <string name="action_undo">Undo</string>
     <string name="grocery_list_empty">No Groceries</string>
     <string name="grocery_name_hint">Grocery name</string>

@@ -14,7 +14,7 @@
     <!-- Text size -->
     <dimen name="text_size_super_giant">64sp</dimen>
     <dimen name="text_size_super_huge">48sp</dimen>
-    <dimen name="text_size_giant">32sp</dimen>
+    <dimen name="text_size_giant">34sp</dimen>
     <dimen name="text_size_huge">24sp</dimen>
     <dimen name="text_size_large">20sp</dimen>
     <dimen name="text_size_regular">18sp</dimen>
@@ -22,6 +22,13 @@
     <dimen name="text_size_smaller">14sp</dimen>
     <dimen name="text_size_tiny">12sp</dimen>
     <dimen name="text_size_super_tiny">10sp</dimen>
+
+    <dimen name="elevation_0">0dp</dimen>
+    <dimen name="elevation_2">2dp</dimen>
+    <dimen name="elevation_3">3dp</dimen>
+
+    <dimen name="square_size_75">75dp</dimen>
+    <dimen name="square_size_85">85dp</dimen>
 
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_pressed_translation">12dp</dimen>
