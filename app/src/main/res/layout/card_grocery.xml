@@ -17,6 +17,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:clickable="true"
+            android:src="@drawable/ic_edit" />
+
         <RelativeLayout
             android:id="@+id/content_status"
             android:layout_width="@dimen/square_size_75"
@@ -38,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_tiny"
+            android:layout_toLeftOf="@id/action"
             android:layout_toRightOf="@id/content_status">
 
             <TextView
@@ -45,6 +57,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_caption"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Sabun Mandi"
                 android:textAppearance="@style/TextAppearance.Title1" />
 
@@ -53,6 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_title"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="2 items"
                 android:textAppearance="@style/TextAppearance.Subtitle2" />
 
